@@ -34,11 +34,13 @@ export const authOptions: NextAuthOptions = {
                 }
 
                 try {
+                    console.log("[NextAuth] Querying user from DB...");
                     const user = await prisma.user.findUnique({
                         where: {
                             email: credentials.email,
                         },
                     }) as any;
+                    console.log("[NextAuth] User found:", !!user);
 
                     if (!user) {
                         console.error("[NextAuth] User not found:", credentials.email);
@@ -50,10 +52,12 @@ export const authOptions: NextAuthOptions = {
                         throw new Error("Invalid credentials");
                     }
 
+                    console.log("[NextAuth] Comparing passwords...");
                     const isPasswordCorrect = await bcrypt.compare(
                         credentials.password,
                         user.password
                     );
+                    console.log("[NextAuth] Password correct:", isPasswordCorrect);
 
                     if (!isPasswordCorrect) {
                         console.error("[NextAuth] Password incorrect for:", credentials.email);
