@@ -11,8 +11,9 @@ import prisma from "./prisma";
  * for Email/Password authentication.
  */
 export const authOptions: NextAuthOptions = {
-    adapter: PrismaAdapter(prisma) as any,
+    // adapter: PrismaAdapter(prisma) as any, // Temporarily disable to isolate issues
     secret: process.env.NEXTAUTH_SECRET,
+    debug: process.env.NODE_ENV === "development",
     session: {
         strategy: "jwt", // Using JWT for session strategy with credentials
     },
