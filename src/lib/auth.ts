@@ -12,6 +12,7 @@ import prisma from "./prisma";
  */
 export const authOptions: NextAuthOptions = {
     adapter: PrismaAdapter(prisma) as any,
+    secret: process.env.NEXTAUTH_SECRET,
     session: {
         strategy: "jwt", // Using JWT for session strategy with credentials
     },
