@@ -31,9 +31,14 @@ export default function LoginPage() {
                 console.error("[Login] Auth error:", res.error);
                 setError("Invalid email or password");
             } else {
-                console.log("[Login] Success, redirecting...");
-                router.push("/dashboard");
-                router.refresh();
+                console.log("[Login] Success, redirecting to dashboard...");
+                // Force a hard redirect in production if router.push hangs
+                if (process.env.NODE_ENV === "production") {
+                    window.location.href = "/dashboard";
+                } else {
+                    router.push("/dashboard");
+                    router.refresh();
+                }
             }
         } catch (err: any) {
             console.error("[Login] Unexpected error:", err);
