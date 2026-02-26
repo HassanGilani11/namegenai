@@ -11,7 +11,11 @@ const prismaClientSingleton = () => {
   const connectionString = process.env.DATABASE_URL;
 
   if (!connectionString) {
-    throw new Error("DATABASE_URL is missing! Please check your .env file.");
+    console.warn("[Prisma] DATABASE_URL is missing! This is expected during build time if not provided.");
+    // Return a dummy client or handle it such that it doesn't crash the build
+    return new PrismaClient({
+      log: ["error"],
+    });
   }
 
   const pool = new Pool({
